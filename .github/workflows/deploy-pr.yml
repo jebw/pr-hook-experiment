@@ -1,5 +1,7 @@
 name: Deploy PR
-on: [ issue_comment, push ]
+on:
+  issue_comment:
+    types: create
 jobs:
   check_comment:
     name: Check comment
@@ -10,4 +12,4 @@ jobs:
           echo ISSUE COMMENTED AT $(date)
       - name: debug data
         run: |-
-          curl $GITHUB_EVENT_PATH | jq .
+          echo "$GITHUB_EVENT_PATH"
