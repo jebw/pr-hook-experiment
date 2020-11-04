@@ -1,0 +1,8 @@
+name: Deploy PR
+jobs:
+  name: Check comment
+  runs-on: ubuntu-20.04
+  steps:
+    - name: Check comment
+      run: |-
+        echo Hello world
