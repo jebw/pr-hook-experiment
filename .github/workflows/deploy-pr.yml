@@ -1,7 +1,5 @@
 name: Deploy PR
-on:
-  issue_comment:
-    types: create
+on: [ issue_comment ]
 jobs:
   check_comment:
     name: Check comment
