@@ -1,6 +1,7 @@
 name: Deploy PR
 on:
   workflow_dispatch:
+  issue_comment:
   pull_request_review:
     types: [submitted, edited]
   pull_request_review_comment:
@@ -11,4 +12,4 @@ jobs:
     steps:
       - name: Check comment
         run: |-
-          echo $(date)
+          echo WITH COMMENT AT $(date)
