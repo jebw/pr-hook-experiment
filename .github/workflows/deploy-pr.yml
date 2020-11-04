@@ -1,4 +1,6 @@
 name: Deploy PR
+on:
+  workflow_dispatch:
 jobs:
   check_comment:
     name: Check comment
