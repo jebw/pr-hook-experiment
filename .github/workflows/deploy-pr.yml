@@ -1,5 +1,5 @@
 name: Deploy PR
-on: issue_comment
+on: [ issue_comment, push ]
 jobs:
   check_comment:
     name: Check comment
@@ -8,3 +8,6 @@ jobs:
       - name: Check comment
         run: |-
           echo ISSUE COMMENTED AT $(date)
+      - name: debug data
+        run: |-
+          which jq
