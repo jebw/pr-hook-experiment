@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
   pull_request_review:
     types: [submitted, edited]
+  pull_request_review_comment:
 jobs:
   check_comment:
     name: Check comment
@@ -10,4 +11,4 @@ jobs:
     steps:
       - name: Check comment
         run: |-
-          echo Hello world again
+          echo $(date)
