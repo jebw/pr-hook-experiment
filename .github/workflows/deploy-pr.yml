@@ -10,4 +10,4 @@ jobs:
           echo ISSUE COMMENTED AT $(date)
       - name: debug data
         run: |-
-          echo "$GITHUB_EVENT_PATH"
+          cat $GITHUB_EVENT_PATH | jq .
