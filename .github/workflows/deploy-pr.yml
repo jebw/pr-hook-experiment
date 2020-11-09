@@ -30,21 +30,34 @@ jobs:
             echo ::set-output name=match::true
           fi
 
-      - name: Branch and sha
+      - name: Fetch Pull Request data
         if: steps.keyword.outputs.match
         run: |-
-          echo "GIT REF $GITHUB_REF"
-          echo "GIT SHA $GITHUB_SHA"
+          PR_URL=$(jq -r .comment.issue_url | sed "s?/issues/?/pulls/?")
+          echo "PR_URL = '$PR_URL'"
+
+          curl \
+            -H "Authorization: token ${{ github.token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: application/json" \
+            -o pull_request.json
+            $PR_URL
+
+      - name: Set branch and SHA
+        if: steps.keyword.outputs.match
+        run: |-
+          cat pull_request.json
 
       - name: Extract comments URL
         id: commentsurl
         if: steps.keyword.outputs.match
         run: |-
           COMMENTS_URL=$(jq -r .issue.comments_url $GITHUB_EVENT_PATH)
+          NOW=$(date)
 
           curl -X POST \
             -H "Authorization: token ${{ github.token }}" \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Content-Type: application/json" \
-            $COMMENTS_URL --data '{"body": "Released at $(date)"}'
+            $COMMENTS_URL --data '{"body": "Released at $NOW"}'
 
