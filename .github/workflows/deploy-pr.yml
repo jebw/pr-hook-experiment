@@ -17,8 +17,6 @@ jobs:
 
           if [ "x$COMMENT" = "x\"$REVIEW\"" ]; then
             echo ::set-output name=match::true
-          else
-            echo ::set-output name=match::false
           fi
       - name: DEBUG
         run: echo ${{ steps.keyword.outputs.match }}
