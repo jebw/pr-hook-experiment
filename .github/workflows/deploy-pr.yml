@@ -12,7 +12,7 @@ jobs:
         id: keyword
         run: |-
           COMMENT=$(jq .comment.body $GITHUB_EVENT_PATH)
-          if [ "x$COMMENT" = "x" ]; then
+          if [ "x$COMMENT" = "xREVIEW" ]; then
             echo ::set-output name=match::true
           else
             echo ::set-output name=match::false
