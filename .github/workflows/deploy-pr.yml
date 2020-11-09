@@ -33,6 +33,10 @@ jobs:
       - name: Fetch Pull Request data
         if: steps.keyword.outputs.match
         run: |-
+          ISSUE_URL=$(jq -r .comment.issue_url $GITHUB_EVENT_PATH)
+          echo "ISSUE URL = '$ISSUE_URL'"
+
+
           PR_URL=$(jq -r .comment.issue_url $GITHUB_EVENT_PATH | sed "s?/issues/?/pulls/?")
           echo "PR_URL = '$PR_URL'"
 
