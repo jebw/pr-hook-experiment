@@ -8,6 +8,15 @@ jobs:
       - name: Check comment
         run: |-
           echo ISSUE COMMENTED AT $(date)
-      - name: debug data
+      - name: Check if keyword
+        id: keyword
         run: |-
-          cat $GITHUB_EVENT_PATH | jq .
+          COMMENT=$(jq .comment.body $GITHUB_EVENT_PATH)
+          if [ "x$COMMENT" = "x" ]; then
+            echo ::set-output name=match::true
+          else
+            echo ::set-output name=match::false
+          fi
+      - name: Continue deploy
+        if: steps.keyword.match
+        run: echo "CONTINUE DEPLOY"
