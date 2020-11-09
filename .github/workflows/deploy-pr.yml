@@ -15,7 +15,7 @@ jobs:
 
           echo "FOUND $COMMENT"
 
-          if [ "x$COMMENT" = "x\"$REVIEW\"" ]; then
+          if [ "x$COMMENT" = 'x"$REVIEW"' ]; then
             echo ::set-output name=match::true
           fi
       - name: DEBUG
