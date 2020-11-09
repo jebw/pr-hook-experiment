@@ -8,18 +8,30 @@ jobs:
       - name: Check comment
         run: |-
           echo ISSUE COMMENTED AT $(date)
-      - name: Check if keyword
+
+      - name: Event action check
+        id: eventaction
+        run: |-
+          EVENT_ACTION=$(jq -r .action $GITHUB_EVENT_PATH)
+
+          if [ "x$EVENT_ACTION" = "xcreated" ]; then
+            echo ::set-output name=created::true
+          fi
+
+      - name: Check for keyword
+        if: steps.eventcheck.outputs.created
         id: keyword
         run: |-
           COMMENT=$(jq -r .comment.body $GITHUB_EVENT_PATH)
 
-          echo "FOUND $COMMENT"
-
           if [ "x$COMMENT" = "xREVIEW" ]; then
             echo ::set-output name=match::true
           fi
+
       - name: DEBUG
         run: echo ${{ steps.keyword.outputs.match }}
+
       - name: Continue deploy
         if: steps.keyword.outputs.match
         run: echo "CONTINUE DEPLOY"
+      
