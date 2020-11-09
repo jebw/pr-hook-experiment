@@ -1,5 +1,5 @@
 name: Deploy PR
-on: [ issue_comment ]
+on: [ pull_request_comment ]
 jobs:
   check_comment:
     name: Check comment
