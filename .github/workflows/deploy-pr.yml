@@ -1,5 +1,7 @@
 name: Deploy PR
-on: [ pull_request_review_comment, issue_comment ]
+on: [ issue_comment ]
+env:
+  TRIGGER_KEYWORD: DEPLOY
 jobs:
   check_comment:
     name: Check comment
@@ -24,33 +26,22 @@ jobs:
         run: |-
           COMMENT=$(jq -r .comment.body $GITHUB_EVENT_PATH)
 
-          if [ "x$COMMENT" = "xREVIEW" ]; then
+          if [ "x$COMMENT" = "x$TRIGGER_KEYWORD" ]; then
             echo ::set-output name=match::true
           fi
 
-      - name: DEBUG
-        run: echo ${{ steps.keyword.outputs.match }}
-
-      - name: Continue deploy
-        if: steps.keyword.outputs.match
-        run: echo "CONTINUE DEPLOY"
-      
       - name: Extract comments URL
         id: commentsurl
         if: steps.keyword.outputs.match
         run: |-
           COMMENTS_URL=$(jq -r .issue.comments_url $GITHUB_EVENT_PATH)
-          echo ::set-output name=url::$COMMENTS_URL
 
-      - name: Deployment notification
-        if: steps.commentsurl.outputs.url
-        run: |-
           curl -X POST \
             -H "Authorization: token ${{ github.token }}" \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Content-Type: application/json" \
-            ${{ steps.commentsurl.outputs.url }} \
-            --data '{"body": "Released to ...."}'
+            $COMMENTS_URL --data '{"body": "Released to ...."}'
+
 
 
       
