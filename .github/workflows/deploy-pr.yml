@@ -40,12 +40,17 @@ jobs:
         if: steps.keyword.outputs.match
         run: |-
           COMMENTS_URL=$(jq -r .issue.comments_url $GITHUB_EVENT_PATH)
-          echo "FOUND '$COMMENTS_URL'"
           echo ::set-output name=url::$COMMENTS_URL
 
       - name: Deployment notification
-        if: steps.keyword.outputs.match
+        if: steps.commentsurl.outputs.url
         run: |-
-          echo I SHOULD POST TO ${{ steps.commentsurl.outputs.url }}
+          curl -X POST \
+            -H "Authorization: token ${{ github.token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: application/json" \
+            ${{ steps.commentsurl.outputs.url }} \
+            --data '{"body": "Released to ...."}'
+
 
       
