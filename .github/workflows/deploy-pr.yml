@@ -18,5 +18,5 @@ jobs:
             echo ::set-output name=match::false
           fi
       - name: Continue deploy
-        if: steps.keyword.match
+        if: steps.keyword.outputs.match
         run: echo "CONTINUE DEPLOY"
