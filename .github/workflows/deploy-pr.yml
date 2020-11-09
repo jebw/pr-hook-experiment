@@ -10,7 +10,7 @@ jobs:
           echo ISSUE COMMENTED AT $(date)
 
       - name: Event action check
-        id: eventaction
+        id: eventcheck
         run: |-
           EVENT_ACTION=$(jq -r .action $GITHUB_EVENT_PATH)
 
