@@ -14,8 +14,6 @@ jobs:
         run: |-
           EVENT_ACTION=$(jq -r .action $GITHUB_EVENT_PATH)
 
-          echo "FOUND '$EVENT_ACTION'"
-
           if [ "x$EVENT_ACTION" = "xcreated" ]; then
             echo ::set-output name=created::true
           fi
@@ -36,4 +34,18 @@ jobs:
       - name: Continue deploy
         if: steps.keyword.outputs.match
         run: echo "CONTINUE DEPLOY"
+      
+      - name: Extract comments URL
+        id: commentsurl
+        if: steps.keyword.outputs.match
+        run: |-
+          COMMENTS_URL=$(jq -r .issue.comments_url $GITHUB_EVENT_PATH)
+          echo "FOUND '$COMMENTS_URL'"
+          echo ::set-output name=url::$COMMENTS_URL
+
+      - name: Deployment notification
+        if: steps.keyword.outputs.match
+        run: |-
+          echo I SHOULD POST TO ${{ steps.commentsurl.outputs.url }}
+
       
