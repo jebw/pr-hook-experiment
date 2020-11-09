@@ -14,6 +14,8 @@ jobs:
         run: |-
           EVENT_ACTION=$(jq -r .action $GITHUB_EVENT_PATH)
 
+          echo "FOUND '$EVENT_ACTION'"
+
           if [ "x$EVENT_ACTION" = "xcreated" ]; then
             echo ::set-output name=created::true
           fi
