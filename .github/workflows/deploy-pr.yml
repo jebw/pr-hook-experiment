@@ -11,11 +11,11 @@ jobs:
       - name: Check if keyword
         id: keyword
         run: |-
-          COMMENT=$(jq .comment.body $GITHUB_EVENT_PATH)
+          COMMENT=$(jq -r .comment.body $GITHUB_EVENT_PATH)
 
           echo "FOUND $COMMENT"
 
-          if [ "x$COMMENT" = 'x"$REVIEW"' ]; then
+          if [ "x$COMMENT" = "xREVIEW" ]; then
             echo ::set-output name=match::true
           fi
       - name: DEBUG
