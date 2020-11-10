@@ -1,0 +1,21 @@
+name: Create release
+on: [ workflow_dispatch ]
+jobs:
+  create_release:
+    name: Create a new release
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Retrieve latest release
+        run: |-
+          curl \
+            -H "Authorization: token ${{ github.token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: application/json" \
+            -o latest_release.json \
+            https://api.github.com/repos/jebw/pr-hook-experiment/releases/latest
+
+      - name: Parse latest release
+        run: cat latest_release.json
+
+      - name: Ruby test
+        run: ruby -e "puts 'Hello world'"
