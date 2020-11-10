@@ -36,7 +36,6 @@ jobs:
           ISSUE_URL=$(jq -r .comment.issue_url $GITHUB_EVENT_PATH)
           echo "ISSUE URL = '$ISSUE_URL'"
 
-
           PR_URL=$(jq -r .comment.issue_url $GITHUB_EVENT_PATH | sed "s?/issues/?/pulls/?")
           echo "PR_URL = '$PR_URL'"
 
@@ -44,7 +43,7 @@ jobs:
             -H "Authorization: token ${{ github.token }}" \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Content-Type: application/json" \
-            -o pull_request.json
+            -o pull_request.json \
             $PR_URL
 
       - name: Set branch and SHA
